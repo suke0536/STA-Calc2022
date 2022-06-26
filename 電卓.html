@@ -54,6 +54,9 @@
                 window.alert("記号を入力してください");
             }
             else if(n.value == "."){
+                if (num == false){
+                    num += 0;
+                }
                 if (num.indexOf(".") == -1){
                     num += ".";
                     nflg = true;
