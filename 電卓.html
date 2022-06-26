@@ -1,0 +1,128 @@
+<!DOCTYPE	HTML>
+<html	lang="ja">
+<head>
+<meta charset="utf-8">
+<title>電卓</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form>
+        <table>
+            <tr>
+                <td colspan="4" id="display"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="()" onclick="markValue(this)" class="mark"></td>
+                <td><input type="button" value="%" onclick="markValue(this)" class="mark"></td>
+                <td><input type="button" value="ac" onclick="markValue(this)" class="mark"></td>
+                <td><input type="button" value="≪" onclick="numValue(this)" class="mark"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="7" onclick="numValue(this)"></td>
+                <td><input type="button" value="8" onclick="numValue(this)"></td>
+                <td><input type="button" value="9" onclick="numValue(this)"></td>
+                <td><input type="button" value="÷" onclick="markValue(this)" class="mark"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="4" onclick="numValue(this)"></td>
+                <td><input type="button" value="5" onclick="numValue(this)"></td>
+                <td><input type="button" value="6" onclick="numValue(this)"></td>
+                <td><input type="button" value="×" onclick="markValue(this)" class="mark"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="1" onclick="numValue(this)"></td>
+                <td><input type="button" value="2" onclick="numValue(this)"></td>
+                <td><input type="button" value="3" onclick="numValue(this)"></td>
+                <td><input type="button" value="-" onclick="markValue(this)" class="mark"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="0" onclick="numValue(this)"></td>
+                <td><input type="button" value="." onclick="numValue(this)"></td>
+                <td><input type="button" value="=" onclick="calcAns(this)" class="mark2"></td>
+                <td><input type="button" value="+" onclick="markValue(this)" class="mark"></td>
+            </tr>
+        </table>
+    </form>
+    <script>
+    let num = "";
+    let disp = "";
+    let mflg = false;
+    let kflg = false;
+    let nflg = true;
+        function numValue(n){
+            if(mflg == true){
+                window.alert("記号を入力してください");
+            }
+            else if(n.value == "."){
+                if (num.indexOf(".") == -1){
+                    num += ".";
+                    nflg = true;
+                }
+            }
+            else if(n.value == "≪"){
+                num = num.slice(0,num.length-1);
+            }
+            else{
+                num += n.value;
+                nflg = false;
+            }
+            document.getElementById('display').innerHTML = "<span>" + disp + "　<br></span>" + num;
+        }
+        function markValue(vl){
+            if(vl.value == "ac"){
+                num = "";
+                disp = "";
+                mflg = false;
+                kflg = false;
+                nflg = true;
+                document.getElementById('display').innerHTML = "<br>0";
+            }
+            else if(nflg == true){
+                window.alert("数値を入力してください");
+            }
+            else if(vl.value == "()"){
+                if (mflg == false && kflg == false && num == false){
+                    disp += num;
+                    num = "";
+                    disp += "(";
+                    kflg = true;
+                    nflg = true;
+                    document.getElementById('display').innerHTML = "<span>" + disp + "　<br></span>" + 0;
+                }
+                else if(kflg == true && num >= 0){
+                    disp += num;
+                    num = "";
+                    disp += ")";
+                    kflg = false;
+                    mflg = true;
+                    document.getElementById('display').innerHTML = "<span>" + disp + "　<br></span>" + 0;
+                }
+            }
+            else {
+                disp += num;
+                num = "";
+                mflg = false;
+                if(isNaN(disp.charAt(disp.length-1)) && disp.charAt(disp.length-1) != ")"){
+                    disp = disp.slice(0,disp.length-1);
+                }
+                disp += vl.value;
+                document.getElementById('display').innerHTML = "<span>" + disp + "　<br></span>" + 0;
+            }
+            
+        }
+        function calcAns(vl){
+            disp += num;
+            num = "";
+            let ans = disp;
+            while (ans.indexOf("×") != -1) {
+                ans = ans.replace("×","*");
+            }
+            while (ans.indexOf("÷") != -1) {
+                ans = ans.replace("÷","/");
+            }
+            document.getElementById('display').innerHTML = "<span>" + disp + "=　<br></span>" + eval(ans);
+            disp = eval(ans);
+        }
+    </script>
+</body>
+</html>
